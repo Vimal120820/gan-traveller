@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book Package | Ganapathy Traveller</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="booking-body">
+
+<section class="booking-hero">
+  <div class="booking-hero-overlay"></div>
+  <div class="booking-hero-content">
+    <a class="booking-back-link" href="index.html">Back to Home</a>
+    <p class="booking-kicker">Ganapathy Traveller Booking Form</p>
+    <h1>Choose Your Package</h1>
+    <p>Fill in your travel details and send your booking request directly to WhatsApp.</p>
+  </div>
+</section>
+
+<main class="booking-main">
+  <section class="booking-card">
+    <h2>Package Booking Form</h2>
+    <form id="bookingForm" class="booking-form">
+      <div class="booking-grid">
+        <label>
+          <span>Name</span>
+          <input type="text" name="name" placeholder="Enter your name" required>
+        </label>
+        <label>
+          <span>Email</span>
+          <input type="email" name="email" placeholder="Enter your email" required>
+        </label>
+        <label>
+          <span>Contact</span>
+          <input type="tel" name="contact" placeholder="Enter your contact number" required>
+        </label>
+        <label>
+          <span>Package</span>
+          <select name="package" required>
+            <option value="">Select a package</option>
+            <option>Munnar Package</option>
+            <option>Munnar Sunset</option>
+            <option>Kolukkmalai</option>
+            <option>Vattavada Hidden Spot</option>
+            <option>Kerala Vayanad</option>
+            <option>Truck Trails</option>
+            <option>Custom Trip</option>
+          </select>
+        </label>
+        <label>
+          <span>Date</span>
+          <input type="date" name="date" required>
+        </label>
+        <label>
+          <span>Location</span>
+          <input type="text" name="location" placeholder="Pickup or travel location" required>
+        </label>
+        <label>
+          <span>Couple or Single</span>
+          <select name="travelType" required>
+            <option value="">Choose one</option>
+            <option>Couple</option>
+            <option>Single</option>
+          </select>
+        </label>
+        <label>
+          <span>Days</span>
+          <input type="number" name="days" min="1" placeholder="Number of days" required>
+        </label>
+      </div>
+      <label class="booking-notes">
+        <span>Extra Notes</span>
+        <textarea name="notes" rows="4" placeholder="Any extra travel details"></textarea>
+      </label>
+      <button type="submit" class="booking-submit-btn">Submit Booking</button>
+    </form>
+    <p id="bookingThankYouMessage" class="booking-thank-you" hidden>Thank you for choose package. Your booking details are ready to send on WhatsApp.</p>
+  </section>
+</main>
+
+<script>
+  const bookingForm = document.getElementById('bookingForm');
+  const bookingThankYouMessage = document.getElementById('bookingThankYouMessage');
+
+  function buildBookingMessage(formData) {
+    return [
+      'Hello Ganapathy Traveller,',
+      '',
+      'I want to book a package.',
+      `Name: ${formData.get('name')}`,
+      `Email: ${formData.get('email')}`,
+      `Contact: ${formData.get('contact')}`,
+      `Package: ${formData.get('package')}`,
+      `Date: ${formData.get('date')}`,
+      `Location: ${formData.get('location')}`,
+      `Couple or Single: ${formData.get('travelType')}`,
+      `Days: ${formData.get('days')}`,
+      `Extra Notes: ${formData.get('notes') || 'No extra notes'}`,
+      '',
+      'Thank you for choose package.'
+    ].join('\n');
+  }
+
+  bookingForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    if (!bookingForm.reportValidity()) {
+      return;
+    }
+
+    const formData = new FormData(bookingForm);
+    const whatsappNumber = '919003850290';
+    const message = buildBookingMessage(formData);
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+
+    bookingThankYouMessage.hidden = false;
+    bookingThankYouMessage.textContent = 'Thank you for choose package. Your booking details are being prepared for WhatsApp.';
+    window.open(whatsappUrl, '_blank');
+  });
+</script>
+
+</body>
+</html>
